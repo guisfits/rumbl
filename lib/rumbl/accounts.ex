@@ -14,7 +14,7 @@ defmodule Rumbl.Accounts do
   end
 
   def get_user(id) do
-    Enum.find(list_users(), & &1.id == id)
+    Enum.find(list_users(), &(&1.id == id))
   end
 
   def get_user_by(params) do
