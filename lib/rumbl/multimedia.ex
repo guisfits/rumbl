@@ -7,6 +7,7 @@ defmodule Rumbl.Multimedia do
   alias Rumbl.Repo
 
   alias Rumbl.Multimedia.Video
+  alias Rumbl.Accounts
 
   @doc """
   Returns the list of videos.
@@ -49,9 +50,10 @@ defmodule Rumbl.Multimedia do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_video(attrs \\ %{}) do
+  def create_video(%Accounts.User{} = user, attrs \\ %{}) do
     %Video{}
     |> Video.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
@@ -100,5 +102,59 @@ defmodule Rumbl.Multimedia do
   """
   def change_video(%Video{} = video, attrs \\ %{}) do
     Video.changeset(video, attrs)
+  end
+
+  @doc """
+    Description
+    This function takes an Accounts.User struct as an argument and returns a list of Video structs that are associated with the user.
+
+    ## Parameters
+      user: an Accounts.User struct.
+    ## Returns
+      A list of Video structs that are associated with the user.
+    ## Example
+      iex> user = Accounts.get_user!(1)
+      iex> list_user_videos(user)
+      [%Video{id: 1, title: "My first video", user_id: 1}, %Video{id: 2, title: "My second video", user_id: 1}]
+  """
+  def list_user_videos(%Accounts.User{} = user) do
+    Video
+    |> user_video_query(user)
+    |> Repo.all()
+  end
+
+  @doc """
+  Description
+    This function takes an Accounts.User struct and a video id as arguments and
+    returns the Video struct that is associated with the user and has the given id,
+    or throws an error if doesn't find it.
+
+    ## Parameters
+      user: an Accounts.User struct.
+      video_id: the id of the video that you want to find.
+    ## Returns
+      The Video struct associated with the user and has the given id.
+      throws an error
+    ## Examples
+      iex> user = Accounts.get_user!(1)
+      iex> get_user_video!(user, 1)
+      %Video{id: 1, title: "My first video", user_id: 1}
+
+      iex> user = Accounts.get_user!(1)
+      iex> get_user_video!(user, 0)
+      Ecto.NoResultsError
+  """
+  def get_user_video!(%Accounts.User{} = user, video_id) do
+    Video
+    |> user_video_query(user)
+    |> Repo.get!(video_id)
+  end
+
+  ##
+  # Helpers
+
+  defp user_video_query(query, %Accounts.User{id: user_id}) do
+    from video in query,
+    where: video.user_id == ^user_id
   end
 end
