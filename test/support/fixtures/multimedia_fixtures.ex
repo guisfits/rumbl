@@ -13,7 +13,7 @@ defmodule Rumbl.MultimediaFixtures do
       |> Enum.into(%{
         description: "some description",
         title: "some title",
-        url: "some url"
+        url: "https://youtube.com"
       })
       |> Rumbl.Multimedia.create_video()
 
@@ -28,9 +28,8 @@ defmodule Rumbl.MultimediaFixtures do
       attrs
       |> Enum.into(%{
         name: "Guilherme",
-        username: "guisfits",
+        username: "guisfits#{System.unique_integer([:positive])}",
         password: "1234abc",
-        password_hash: "1234abc",
       })
       |> Rumbl.Accounts.create_user()
 
