@@ -1,4 +1,4 @@
-defmodule Rumbl.MultimediaFixtures do
+defmodule Rumbl.Fixtures do
   @moduledoc """
     This module defines test helpers for creating
     entities via the `Rumbl.Multimedia` context.
@@ -29,9 +29,9 @@ defmodule Rumbl.MultimediaFixtures do
       |> Enum.into(%{
         name: "Guilherme",
         username: "guisfits#{System.unique_integer([:positive])}",
-        password: "1234abc",
+        password: "1234abc"
       })
-      |> Rumbl.Accounts.create_user()
+      |> Rumbl.Accounts.register_user()
 
     user
   end

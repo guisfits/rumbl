@@ -19,6 +19,7 @@ defmodule Rumbl.DataCase do
   using do
     quote do
       alias Rumbl.Repo
+      alias Rumbl.Fixtures
 
       import Ecto
       import Ecto.Changeset
