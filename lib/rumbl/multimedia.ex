@@ -152,7 +152,7 @@ defmodule Rumbl.Multimedia do
 
   defp user_video_query(query, %Accounts.User{id: user_id}) do
     from video in query,
-    where: video.user_id == ^user_id
+      where: video.user_id == ^user_id
   end
 
   @doc """

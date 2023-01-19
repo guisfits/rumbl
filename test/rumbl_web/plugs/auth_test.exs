@@ -20,7 +20,8 @@ defmodule RumblWeb.Plugs.AuthTest do
     end
 
     test "for existing current_user", %{conn: conn} do
-      conn = conn
+      conn =
+        conn
         |> assign(:current_user, %Rumbl.Accounts.User{})
         |> @subject.authenticate_user([])
 
@@ -56,6 +57,7 @@ defmodule RumblWeb.Plugs.AuthTest do
   describe "call/2" do
     test "call places user from session into assigns", %{conn: conn} do
       user = user_fixture()
+
       conn =
         conn
         |> put_session(:user_id, user.id)

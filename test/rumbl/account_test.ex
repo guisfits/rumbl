@@ -9,7 +9,7 @@ defmodule Rumbl.AccountsTest do
     @invalid_attrs %{}
 
     test "with valid data inserts user" do
-      assert {:ok, %User{id: id}=user} = Accounts.register_user(@valid_attrs)
+      assert {:ok, %User{id: id} = user} = Accounts.register_user(@valid_attrs)
       assert user.name == "User"
       assert user.username == "eva"
       assert [%User{id: ^id}] = Accounts.list_users()
@@ -55,11 +55,13 @@ defmodule Rumbl.AccountsTest do
     end
 
     test "returns unauthorized error with invalid password", %{user: user} do
-      assert {:error, :unauthorized} = Accounts.authenticate_by_username_and_pass(user.username, "badpass")
+      assert {:error, :unauthorized} =
+               Accounts.authenticate_by_username_and_pass(user.username, "badpass")
     end
 
     test "returns not found error with no matching user for email" do
-      assert {:error, :not_found} = Accounts.authenticate_by_username_and_pass("unknownuser", @pass)
+      assert {:error, :not_found} =
+               Accounts.authenticate_by_username_and_pass("unknownuser", @pass)
     end
   end
 end

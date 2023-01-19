@@ -17,18 +17,21 @@ defmodule RumblWeb.VideoControllerTest do
   @invalid_attrs %{title: "invalid"}
 
   test "requires use authentication on all actions", %{conn: conn} do
-    Enum.each([
-      get(conn, Routes.video_path(conn, :new)),
-      get(conn, Routes.video_path(conn, :index)),
-      get(conn, Routes.video_path(conn, :show, "123")),
-      get(conn, Routes.video_path(conn, :edit, "123")),
-      get(conn, Routes.video_path(conn, :update, "123", %{})),
-      get(conn, Routes.video_path(conn, :create, %{})),
-      get(conn, Routes.video_path(conn, :delete, "123")),
-    ], fn conn ->
-      assert html_response(conn, 302)
-      assert conn.halted
-    end)
+    Enum.each(
+      [
+        get(conn, Routes.video_path(conn, :new)),
+        get(conn, Routes.video_path(conn, :index)),
+        get(conn, Routes.video_path(conn, :show, "123")),
+        get(conn, Routes.video_path(conn, :edit, "123")),
+        get(conn, Routes.video_path(conn, :update, "123", %{})),
+        get(conn, Routes.video_path(conn, :create, %{})),
+        get(conn, Routes.video_path(conn, :delete, "123"))
+      ],
+      fn conn ->
+        assert html_response(conn, 302)
+        assert conn.halted
+      end
+    )
   end
 
   @tag login_as: "user1"
@@ -36,7 +39,7 @@ defmodule RumblWeb.VideoControllerTest do
     user_video = video_fixture(user, title: "funny cats")
     other_video = video_fixture(user_fixture(username: "other"), title: "another video")
 
-    conn = get conn, Routes.video_path(conn, :index)
+    conn = get(conn, Routes.video_path(conn, :index))
     assert html_response(conn, 200) =~ ~r/Listing Videos/
     assert String.contains?(conn.resp_body, user_video.title)
     refute String.contains?(conn.resp_body, other_video.title)
