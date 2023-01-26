@@ -3,11 +3,20 @@ defmodule Rumbl.Accounts do
     The Account context
   """
 
+  import Ecto.Query
+
   alias Rumbl.Accounts.User
   alias Rumbl.Repo
 
   def list_users do
     Repo.all(User)
+  end
+
+  def list_users_with_ids(ids) do
+    User
+    |> from()
+    |> where([u], u.id in ^ids)
+    |> Repo.all()
   end
 
   def get_user(id) do
