@@ -1,0 +1,196 @@
+defmodule Rumbl.Multimedia do
+  @moduledoc """
+  The Multimedia context.
+  """
+
+  import Ecto.Query, warn: false
+  alias Rumbl.Repo
+
+  alias Rumbl.Multimedia.Video
+  alias Rumbl.Accounts
+
+  @doc """
+  Returns the list of videos.
+
+  ## Examples
+
+      iex> list_videos()
+      [%Video{}, ...]
+
+  """
+  def list_videos do
+    Repo.all(Video)
+  end
+
+  @doc """
+  Gets a single video.
+
+  Raises `Ecto.NoResultsError` if the Video does not exist.
+
+  ## Examples
+
+      iex> get_video!(123)
+      %Video{}
+
+      iex> get_video!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_video!(id), do: Repo.get!(Video, id)
+
+  @doc """
+  Creates a video.
+
+  ## Examples
+
+      iex> create_video(%{field: value})
+      {:ok, %Video{}}
+
+      iex> create_video(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_video(%Accounts.User{} = user, attrs \\ %{}) do
+    %Video{}
+    |> Video.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a video.
+
+  ## Examples
+
+      iex> update_video(video, %{field: new_value})
+      {:ok, %Video{}}
+
+      iex> update_video(video, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_video(%Video{} = video, attrs) do
+    video
+    |> Video.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a video.
+
+  ## Examples
+
+      iex> delete_video(video)
+      {:ok, %Video{}}
+
+      iex> delete_video(video)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_video(%Video{} = video) do
+    Repo.delete(video)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking video changes.
+
+  ## Examples
+
+      iex> change_video(video)
+      %Ecto.Changeset{data: %Video{}}
+
+  """
+  def change_video(%Video{} = video, attrs \\ %{}) do
+    Video.changeset(video, attrs)
+  end
+
+  @doc """
+    Description
+    This function takes an Accounts.User struct as an argument and returns a list of Video structs that are associated with the user.
+
+    ## Parameters
+      user: an Accounts.User struct.
+    ## Returns
+      A list of Video structs that are associated with the user.
+    ## Example
+      iex> user = Accounts.get_user!(1)
+      iex> list_user_videos(user)
+      [%Video{id: 1, title: "My first video", user_id: 1}, %Video{id: 2, title: "My second video", user_id: 1}]
+  """
+  def list_user_videos(%Accounts.User{} = user) do
+    Video
+    |> user_video_query(user)
+    |> Repo.all()
+  end
+
+  @doc """
+  Description
+    This function takes an Accounts.User struct and a video id as arguments and
+    returns the Video struct that is associated with the user and has the given id,
+    or throws an error if doesn't find it.
+
+    ## Parameters
+      user: an Accounts.User struct.
+      video_id: the id of the video that you want to find.
+    ## Returns
+      The Video struct associated with the user and has the given id.
+      throws an error
+    ## Examples
+      iex> user = Accounts.get_user!(1)
+      iex> get_user_video!(user, 1)
+      %Video{id: 1, title: "My first video", user_id: 1}
+
+      iex> user = Accounts.get_user!(1)
+      iex> get_user_video!(user, 0)
+      Ecto.NoResultsError
+  """
+  def get_user_video!(%Accounts.User{} = user, video_id) do
+    Video
+    |> user_video_query(user)
+    |> Repo.get!(video_id)
+  end
+
+  defp user_video_query(query, %Accounts.User{id: user_id}) do
+    from video in query,
+      where: video.user_id == ^user_id
+  end
+
+  @doc """
+    Create category without error
+
+    ## Examples
+    iex> create_category!("hello")
+    %Rumbl.Multimedia.Category{name: "hello", ...}
+  """
+
+  alias Rumbl.Multimedia.Category
+
+  def create_category!(name) do
+    Repo.insert!(%Category{name: name}, on_conflict: :nothing)
+  end
+
+  def list_alphabetical_categories do
+    Category
+    |> Category.alphabetical()
+    |> Repo.all()
+  end
+
+  alias Rumbl.Multimedia.Annotation
+
+  def annotate_video(%Accounts.User{id: user_id}, video_id, attrs) do
+    %Annotation{video_id: video_id, user_id: user_id}
+    |> Annotation.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def list_annotation(%Video{} = video, since_id \\ 0) do
+    IO.puts("🥶 Seen_id: #{since_id}")
+    Repo.all(
+      from a in Ecto.assoc(video, :annotations),
+      where: a.id > ^since_id,
+      order_by: [asc: a.at, asc: a.id],
+      limit: 500,
+      preload: [:user]
+    )
+  end
+end
