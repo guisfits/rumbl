@@ -24,7 +24,9 @@ defmodule Rumbl.Umbrella.MixProject do
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps/ folder.
   defp deps do
-    []
+    [
+      {:sweet_xml, "~> 0.6.5"},
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
