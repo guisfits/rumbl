@@ -26,13 +26,13 @@ defmodule InfoSys.Wolfram do
     [%Result{backend: __MODULE__, score: 95, text: to_string(answer)}]
   end
 
-  defp fetch_xml(query) do
-    {:ok, {_, _, body}} = :httpc.request(String.to_charlist(url(query)))
+  defp fetch_xml(query_str) do
+    {:ok, {_, _, body}} = :httpc.request(String.to_char_list(url(query_str)))
     body
   end
 
   defp url(input) do
-    "#{@base}" <> URI.encode_query(appid: id(), input: input, format: "plaintext")
+    "#{@base}?appid=#{id()}&input=#{URI.encode_www_form(input)}&format=plaintext"
   end
 
   defp id, do: Application.fetch_env!(:info_sys, :wolfram)[:app_id]
