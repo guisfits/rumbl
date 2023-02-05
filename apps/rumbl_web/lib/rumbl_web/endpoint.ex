@@ -23,8 +23,8 @@ defmodule RumblWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :rumbl_web,
-    gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    gzip: false
+    # only: ~w(js css fonts images favicon.ico robots.txt)
 
 
   # Code reloading can be explicitly enabled under the
