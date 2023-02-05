@@ -6,6 +6,7 @@ defmodule InfoSys.Cache do
 
   def put(name \\ __MODULE__, key, value) do
     true = :ets.insert(tab_name(name), {key, value})
+    :ok
   end
 
   def fetch(name \\ __MODULE__, key) do
@@ -17,7 +18,7 @@ defmodule InfoSys.Cache do
   ##
   # OTP
 
-  @clear_interval 6_000
+  @clear_interval :timer.seconds(60)
 
   def start_link(opts) do
     opts = Keyword.put_new(opts, :name, __MODULE__)
@@ -46,11 +47,11 @@ defmodule InfoSys.Cache do
     name
     |> tab_name()
     |> :ets.new([
-      :set,
-      :named_table,
-      :public,
-      read_concurrency: true,
-      write_concurrency: true
+       :set,
+       :named_table,
+       :public,
+       read_concurrency: true,
+       write_concurrency: true
     ])
   end
 
