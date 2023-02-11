@@ -1,5 +1,5 @@
 defmodule RumblWeb.UserSocketTest do
-  use RumblWeb.ConnCase, async: true
+  use RumblWeb.ChannelCase, async: true
 
   @subject RumblWeb.UserSocket
 
