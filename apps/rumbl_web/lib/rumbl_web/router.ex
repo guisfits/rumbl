@@ -1,6 +1,8 @@
 defmodule RumblWeb.Router do
   use RumblWeb, :router
 
+  import Phoenix.LiveView
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -22,6 +24,9 @@ defmodule RumblWeb.Router do
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     get "/watch/:id", WatchController, :show
+
+    live "/clock", ClockLive
+    live "/counter", CounterLive
   end
 
   scope "/manage", RumblWeb do
