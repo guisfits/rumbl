@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<queryresult success='true'
+    error='false'
+    xml:space='preserve'
+    numpods='6'
+    datatypes='Math'
+    timedout=''
+    timedoutpods=''
+    timing='1.685'
+    parsetiming='1.371'
+    parsetimedout='false'
+    recalculate=''
+    id='MSP8123f032gaa4idh0ha00000h280cg4dihf5d9b'
+    host='https://www6b3.wolframalpha.com'
+    server='14'
+    related='https://www6b3.wolframalpha.com/api/v1/relatedQueries.jsp?id=MSPa8223f032gaa4idh0ha00004cceid3eceai91gh4307842769377011871'
+    version='2.6'
+    inputstring='1   1'>
+ <pod title='Input'
+     scanner='Identity'
+     id='Input'
+     position='100'
+     error='false'
+     numsubpods='1'>
+  <subpod title=''>
+   <plaintext>1�1</plaintext>
+  </subpod>
+  <expressiontypes count='1'>
+   <expressiontype name='Default' />
+  </expressiontypes>
+ </pod>
+ <pod title='Result'
+     scanner='Simplification'
+     id='Result'
+     position='200'
+     error='false'
+     numsubpods='1'
+     primary='true'>
+  <subpod title=''>
+   <plaintext>2</plaintext>
+  </subpod>
+  <expressiontypes count='1'>
+   <expressiontype name='Default' />
+  </expressiontypes>
+  <states count='1'>
+   <state name='Step-by-step solution'
+       input='Result__Step-by-step solution'
+       stepbystep='true'
+       buttonstyle='StepByStepSolution' />
+  </states>
+ </pod>
+ <pod title='Number line'
+     scanner='NumberLine'
+     id='NumberLine'
+     position='300'
+     error='false'
+     numsubpods='1'>
+  <subpod title=''>
+   <plaintext></plaintext>
+  </subpod>
+  <expressiontypes count='1'>
+   <expressiontype name='Default' />
+  </expressiontypes>
+ </pod>
+ <pod title='Number name'
+     scanner='Integer'
+     id='NumberName'
+     position='400'
+     error='false'
+     numsubpods='1'>
+  <subpod title=''>
+   <plaintext>one</plaintext>
+  </subpod>
+  <expressiontypes count='1'>
+   <expressiontype name='Default' />
+  </expressiontypes>
+ </pod>
+ <pod title='Visual representation'
+     scanner='Integer'
+     id='VisualRepresentation'
+     position='500'
+     error='false'
+     numsubpods='1'>
+  <subpod title=''>
+   <plaintext>*</plaintext>
+  </subpod>
+  <expressiontypes count='1'>
+   <expressiontype name='Default' />
+  </expressiontypes>
+ </pod>
+ <pod title='Illustration'
+     scanner='Arithmetic'
+     id='Illustration'
+     position='600'
+     error='false'
+     numsubpods='1'>
+  <subpod title=''>
+   <plaintext></plaintext>
+  </subpod>
+  <expressiontypes count='1'>
+   <expressiontype name='Default' />
+  </expressiontypes>
+ </pod>
+ <assumptions count='1'>
+  <assumption type='ListOrTimes'
+      template='Assuming ${desc1}. Use ${desc2} instead'
+      count='2'>
+   <value name='Times'
+       desc='multiplication'
+       input='ListOrTimes_Times' />
+   <value name='List'
+       desc='a list'
+       input='ListOrTimes_List' />
+  </assumption>
+ </assumptions>
+</queryresult>
