@@ -1,4 +1,4 @@
-defmodule InfoSys.Wolfram do
+defmodule InfoSys.Backends.Wolfram do
   import SweetXml
 
   alias InfoSys.Result
@@ -26,8 +26,9 @@ defmodule InfoSys.Wolfram do
     [%Result{backend: __MODULE__, score: 95, text: to_string(answer)}]
   end
 
+  @http Application.get_env(:info_sys, :wolfram)[:http_client] || :httpc
   defp fetch_xml(query_str) do
-    {:ok, {_, _, body}} = :httpc.request(String.to_char_list(url(query_str)))
+    {:ok, {_, _, body}} = @http.request(String.to_char_list(url(query_str)))
     body
   end
 

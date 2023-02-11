@@ -1,5 +1,5 @@
 defmodule InfoSys do
-  @backends [InfoSys.Wolfram]
+  @backends [InfoSys.Backends.Wolfram]
 
   alias InfoSys.Cache
 
@@ -12,8 +12,7 @@ defmodule InfoSys do
     opts = Keyword.put_new(opts, :limit, 10)
     backends = opts[:backends] || @backends
 
-    {uncached_backends, cached_results} =
-      fetch_cached_results(backends, query, opts)
+    {uncached_backends, cached_results} = fetch_cached_results(backends, query, opts)
 
     uncached_backends
     |> Enum.map(&async_query(&1, query, opts))
@@ -30,8 +29,8 @@ defmodule InfoSys do
   end
 
   defp async_query(backend, query, opts) do
-    Task.Supervisor.async_nolink(InfoSys.TaskSupervisor,
-      backend, :compute, [query, opts], shutdown: :brutal_kill
+    Task.Supervisor.async_nolink(InfoSys.TaskSupervisor, backend, :compute, [query, opts],
+      shutdown: :brutal_kill
     )
   end
 
@@ -45,7 +44,8 @@ defmodule InfoSys do
             {:ok, results} -> {uncached_backends, [results | acc_results]}
             :error -> {[backend | uncached_backends], acc_results}
           end
-        end)
+        end
+      )
 
     {uncached_backends, List.flatten(results)}
   end
