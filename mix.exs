@@ -25,7 +25,7 @@ defmodule Rumbl.Umbrella.MixProject do
   # and cannot be accessed from applications inside the apps/ folder.
   defp deps do
     [
-      {:sweet_xml, "~> 0.6.5"},
+      {:sweet_xml, "~> 0.6.5"}
     ]
   end
 
